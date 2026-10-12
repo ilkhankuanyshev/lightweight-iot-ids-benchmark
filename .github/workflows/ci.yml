@@ -1,0 +1,43 @@
+# Runs on every push to main and on every pull request.
+# Proves the two reproducibility claims of the project: the pinned environment installs and
+# passes all tests, and the Docker image builds and runs the smoke benchmark under device limits.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  python:
+    name: Pinned environment + tests + smoke run
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install exact pins (no dependency resolution)
+        run: |
+          python -m pip install pip==25.2
+          pip install --no-deps -r requirements.txt
+          pip check
+      - name: Unit and end-to-end tests
+        run: python -m pytest -q
+      - name: Smoke benchmark on data/sample
+        run: python -m src.benchmark --config configs/smoke.yaml
+
+  docker:
+    name: Docker build + smoke run (1 vCPU / 1 GB)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t iot-ids-bench .
+      - name: Smoke run under device limits
+        run: docker run --rm --cpus=1 --memory=1g iot-ids-bench
+      - name: Tests inside the image
+        run: docker run --rm --entrypoint python iot-ids-bench -m pytest -q -p no:cacheprovider
