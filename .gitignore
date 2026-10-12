@@ -1,0 +1,50 @@
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Virtual environments -------------------------------------------------
+.venv/
+venv/
+env/
+.conda/
+
+# --- Jupyter --------------------------------------------------------------
+.ipynb_checkpoints/
+
+# --- Data: only the 10-row sample is versioned ----------------------------
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.parquet
+*.zip
+*.tar.gz
+
+# --- Experiment outputs, logs, model binaries -----------------------------
+results/*
+!results/.gitkeep
+*.log
+*.onnx
+*.pkl
+*.joblib
+*.npy
+*.npz
+*.h5
+*.pt
+*.bin
+
+# --- Secrets and local settings -------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+
+# --- OS / IDE -------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,4 @@
+# Normalise line endings so scripts work on Linux/Docker even when committed from Windows
+* text=auto eol=lf
+*.sh text eol=lf
+*.csv text eol=lf
