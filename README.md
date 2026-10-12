@@ -81,7 +81,6 @@ lightweight-iot-ids-benchmark/
 ├── Dockerfile
 ├── requirements.txt         # exact pins, direct + transitive
 ├── .github/workflows/ci.yml # CI: tests, smoke run, Docker build on every push / PR
-├── AGENTS.md                # rules for the AI coding agent (CLAUDE.md imports it)
 ├── CITATION.cff
 └── LICENSE
 ```
@@ -163,8 +162,7 @@ docker run --rm --cpus=1 --memory=1g -v "$(pwd)/results:/app/results" \
 ## Contributing
 
 Work happens on feature branches with pull requests and Conventional Commits; nothing is
-committed to `main` directly. The rules for both contributors, including the methodological
-invariants that must not change without updating the card, are in [`AGENTS.md`](AGENTS.md).
+committed to `main` directly. Any change to the methodology (variables, metrics, protocol) must be reflected in both methodology cards in `docs/`.
 
 ## Citation
 
