@@ -1,0 +1,78 @@
+# Full experiment (Week 7). Every independent variable and fixed condition lives here.
+# Run:  python -m src.benchmark --config configs/config.yaml
+
+experiment:
+  name: ciciot2023_full
+  seed: 42
+  output_dir: results
+  keep_models: false            # true = keep every .onnx file in results/<run>/artifacts
+
+data:
+  path: data/processed/ciciot2023_capped.csv   # built by: python -m src.prepare_data
+  label_column: label
+  max_rows_per_class: 50000     # stratified cap = class balancing (controlled variable)
+  smoke_augment: null
+
+cv:                             # unit of observation = one split (n = 15 paired values)
+  n_splits: 5
+  n_repeats: 3
+
+features:                       # IV 2: number of input features
+  selector: mutual_info         # ranked on the training fold only
+  counts: [46, 30, 15, 10]
+  mi_max_rows: 50000            # rows used to estimate MI (speed)
+
+models:                         # IV 1: model type. Hyperparameters are fixed, not tuned on test folds.
+  decision_tree:
+    enabled: true
+    params: {max_depth: 20, min_samples_leaf: 5}
+  random_forest:                # baseline at k = 46, FP32 (defaults, 100 trees)
+    enabled: true
+    params: {n_estimators: 100, n_jobs: 1}
+  lightgbm:
+    enabled: true
+    params: {n_estimators: 200, num_leaves: 31, learning_rate: 0.1, n_jobs: 1, verbose: -1}
+  mlp:
+    enabled: true
+    params: {hidden_layer_sizes: [64, 32], max_iter: 50, early_stopping: true}
+  cnn1d:
+    enabled: true
+    params: {filters: 16, kernel_size: 3, hidden: 32, epochs: 10, batch_size: 512, lr: 0.001}
+
+quantization:                   # IV 3: weight precision FP32 / INT8
+  enabled: true
+  apply_to: [mlp, cnn1d]
+  calibration_rows: 1000        # drawn from the training fold
+  per_channel: false
+
+measurement:                    # identical for every configuration
+  runtime: onnxruntime
+  intra_op_threads: 1
+  inter_op_threads: 1
+  batch_size: 1                 # latency is per record
+  warmup_runs: 100
+  timed_runs: 1000
+  throughput_batch_size: 256
+  throughput_repeats: 20
+  timeout_s: 600                # per model measurement
+
+baseline:
+  model: random_forest
+  n_features: 46
+  precision: fp32
+
+guardrails:
+  max_latency_p50_ms: 1.0
+  max_model_size_kb: 1024
+  max_peak_ram_mb: 512
+  max_benign_fpr: 0.02
+
+stats:
+  alpha: 0.05
+  h1_features: 46
+  h2_from: 46
+  h2_to: 15
+  h2_min_latency_reduction: 0.30
+  noninferiority_margin_f1: 0.01   # 1 percentage point
+  h3_features: 46
+  h3_min_size_ratio: 3.0

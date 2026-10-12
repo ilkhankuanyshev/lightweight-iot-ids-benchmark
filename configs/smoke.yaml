@@ -1,0 +1,82 @@
+# Smoke test: runs the FULL code path on the 10-row sample in about a minute.
+# Results only prove that the pipeline works; they carry no scientific meaning.
+# Run:  python -m src.benchmark --config configs/smoke.yaml
+
+experiment:
+  name: smoke
+  seed: 42
+  output_dir: results
+  keep_models: false
+
+data:
+  path: data/sample/ciciot2023_sample.csv
+  label_column: label
+  max_rows_per_class: null
+  smoke_augment:                # jittered resampling so that stratified CV is possible
+    rows_per_class: 40
+    noise: 0.02
+
+cv:
+  n_splits: 2
+  n_repeats: 1
+
+features:
+  selector: mutual_info
+  counts: [46, 15]
+  mi_max_rows: null
+
+models:
+  decision_tree:
+    enabled: true
+    params: {max_depth: 20, min_samples_leaf: 5}
+  random_forest:
+    enabled: true
+    params: {n_estimators: 20, n_jobs: 1}
+  lightgbm:
+    enabled: true
+    params: {n_estimators: 20, num_leaves: 15, learning_rate: 0.1, min_child_samples: 5,
+             n_jobs: 1, verbose: -1}
+  mlp:
+    enabled: true
+    params: {hidden_layer_sizes: [64, 32], max_iter: 30}
+  cnn1d:
+    enabled: true
+    params: {filters: 16, kernel_size: 3, hidden: 32, epochs: 3, batch_size: 64, lr: 0.001}
+
+quantization:
+  enabled: true
+  apply_to: [mlp, cnn1d]
+  calibration_rows: 100
+  per_channel: false
+
+measurement:
+  runtime: onnxruntime
+  intra_op_threads: 1
+  inter_op_threads: 1
+  batch_size: 1
+  warmup_runs: 10
+  timed_runs: 100
+  throughput_batch_size: 64
+  throughput_repeats: 5
+  timeout_s: 120
+
+baseline:
+  model: random_forest
+  n_features: 46
+  precision: fp32
+
+guardrails:
+  max_latency_p50_ms: 1.0
+  max_model_size_kb: 1024
+  max_peak_ram_mb: 512
+  max_benign_fpr: 0.02
+
+stats:
+  alpha: 0.05
+  h1_features: 46
+  h2_from: 46
+  h2_to: 15
+  h2_min_latency_reduction: 0.30
+  noninferiority_margin_f1: 0.01
+  h3_features: 46
+  h3_min_size_ratio: 3.0
