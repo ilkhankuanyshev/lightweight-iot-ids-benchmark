@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, please cite it as below."
+title: "Accuracy-Cost Trade-off of Lightweight ML Models for IoT Intrusion Detection on Resource-Constrained Devices"
+authors:
+  - family-names: Kuanyshev
+    given-names: "Ilkhan"
+version: 0.1.0
+date-released: 2026-10-12
+license: MIT
+repository-code: "https://github.com/ilkhankuanyshev/lightweight-iot-ids-benchmark"
