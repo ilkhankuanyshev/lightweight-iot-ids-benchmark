@@ -48,6 +48,7 @@ def cost_metrics(model_path: Path, rows_path: Path, output_name: str,
     params = {k: mcfg[k] for k in ("warmup_runs", "timed_runs", "throughput_batch_size",
                                    "throughput_repeats", "intra_op_threads", "inter_op_threads")}
     params["output_name"] = output_name
+    params.update({k: mcfg[k] for k in ("raw_path", "context") if k in mcfg})
     cmd = [sys.executable, "-m", "src.latency_worker", str(model_path), str(rows_path),
            json.dumps(params)]
     proc = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True,

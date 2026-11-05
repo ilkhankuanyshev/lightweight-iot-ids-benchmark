@@ -1,0 +1,32 @@
+[
+  {
+    "name": "ss7.docx.pdf",
+    "sha256": "0148bacd0a6ae9bfb21cd701aea85b0b3f87d88fff30b2f3870834e8df8c34df",
+    "pages": 8
+  },
+  {
+    "name": "ss6.docx.pdf",
+    "sha256": "de9fa913bd0be38c94de68f8eb3015056e0567c814d8a1cde460352eb2c3133f",
+    "pages": 5
+  },
+  {
+    "name": "English.pdf",
+    "sha256": "a2a352c3693496cb7a2ebcab4eb9eff7b4ff24e26b1448863c19ec34f2e851ea",
+    "pages": 6
+  },
+  {
+    "name": "Task1_Report_Kuanyshev.pdf",
+    "sha256": "faa2aa7e0192b0c08a9ccd484e5393a0550ebe26a2aa33b74aafec6256891da6",
+    "pages": 6
+  },
+  {
+    "name": "Task 3.docx.pdf",
+    "sha256": "5d790f26568bf1d9e06cfda17c6ec5c2e615cc19d4cba214e8fa172d1ad13055",
+    "pages": 9
+  },
+  {
+    "name": "ss8.docx (1).pdf",
+    "sha256": "e6a63b3f22c025aaf6d7b6a44e207d1837a356cf3a83381f7a4372f9def0c2b2",
+    "pages": 7
+  }
+]

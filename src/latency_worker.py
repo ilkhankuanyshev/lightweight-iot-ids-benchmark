@@ -14,6 +14,8 @@ for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
 import json  # noqa: E402
 import sys  # noqa: E402
 import time  # noqa: E402
+from datetime import datetime, timezone
+from pathlib import Path
 
 import numpy as np  # noqa: E402
 import onnxruntime as ort  # noqa: E402
@@ -29,6 +31,8 @@ def peak_rss_mb() -> float:
                 return int(line.split()[1]) / 1024.0
     except OSError:
         pass
+    if sys.platform == "win32":
+        return psutil.Process().memory_info().peak_wset / 2**20
     import resource
     return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
 
@@ -49,16 +53,40 @@ def measure(model_path: str, rows_path: str, p: dict) -> dict:
 
     X = np.load(rows_path).astype(np.float32)
     rows = [X[i:i + 1] for i in range(len(X))]
+    records = []
     for i in range(int(p["warmup_runs"])):
-        sess.run([out_name], {in_name: rows[i % len(rows)]})
+        feed = {in_name: rows[i % len(rows)]}
+        stamp = datetime.now(timezone.utc).isoformat(timespec="microseconds")
+        start = time.perf_counter_ns()
+        sess.run([out_name], feed)
+        elapsed = time.perf_counter_ns() - start
+        records.append({"phase": "warmup", "sequence": i, "timestamp_utc": stamp,
+                        "latency_ms": elapsed / 1e6, "status": "ok", "error": ""})
 
     n = int(p["timed_runs"])
     lat_ns = np.empty(n, dtype=np.int64)
     for i in range(n):
         r = rows[i % len(rows)]
+        feed = {in_name: r}
+        stamp = datetime.now(timezone.utc).isoformat(timespec="microseconds")
+        error = ""
         t = time.perf_counter_ns()
-        sess.run([out_name], {in_name: r})
+        try:
+            sess.run([out_name], feed)
+        except Exception as exc:
+            error = type(exc).__name__ + ": " + str(exc)
         lat_ns[i] = time.perf_counter_ns() - t
+        records.append({"phase": "benchmark", "sequence": i, "timestamp_utc": stamp,
+                        "latency_ms": lat_ns[i] / 1e6,
+                        "status": "error" if error else "ok", "error": error})
+    if p.get("raw_path"):
+        target = Path(p["raw_path"])
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open("w", encoding="utf-8") as fh:
+            for row in records:
+                fh.write(json.dumps({**p["context"], **row}, allow_nan=False) + "\n")
+    if any(r["status"] != "ok" for r in records):
+        raise RuntimeError("Inference failures retained in raw JSONL")
     lat_ms = lat_ns / 1e6
 
     bs = int(p["throughput_batch_size"])

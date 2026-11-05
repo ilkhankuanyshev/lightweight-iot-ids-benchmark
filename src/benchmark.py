@@ -70,7 +70,9 @@ def check_guardrails(row: dict[str, Any], g: dict[str, Any]) -> tuple[bool, list
         violations.append("run_failed")
     for metric, limit_key in rules:
         value, limit = _num(row.get(metric)), g.get(limit_key)
-        if limit is not None and value is not None and value == value and value > limit:
+        if limit is not None and (value is None or not np.isfinite(value)):
+            violations.append(f"{metric}:missing")
+        elif limit is not None and value > limit:
             violations.append(f"{metric}>{limit}")
     return not violations, violations
 
@@ -219,7 +221,17 @@ def _measure_row(row: dict[str, Any], run_dir: Path, mcfg: dict[str, Any],
     if row["status"] == "ok":
         try:
             row.update(cost_metrics(run_dir / row["artifact"], run_dir / row["timing_rows"],
-                                    row["output_name"], mcfg))
+                                    row["output_name"], {
+                                        **mcfg,
+                                        "raw_path": str(run_dir / "raw" / (Path(row["artifact"]).stem + ".jsonl")),
+                                        "context": {"schema_version": 1, "timing_origin": "measured",
+                                            "data_origin": mcfg.get("data_origin", "unverified"),
+                                            "model": row["model"], "n_features": int(row["n_features"]),
+                                            "precision": row["precision"], "split": int(row["split"]),
+                                            "run_id": run_dir.name,
+                                            "unit_id": run_dir.name + ":" + str(row["split"]),
+                                            "batch_size": 1}
+                                    }))
         except Exception as exc:
             log.exception("%s: measurement failed", label)
             row.update(status="failed", error=f"{type(exc).__name__}: {exc}"[:300])

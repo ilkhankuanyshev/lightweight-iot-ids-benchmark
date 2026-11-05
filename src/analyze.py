@@ -174,6 +174,11 @@ def write_reports(run_dir: Path, cfg: dict[str, Any], stats: bool = True) -> Non
 
     if not stats:
         return
+    if smoke:
+        (run_dir / "stats.md").write_text(
+            "# Hypothesis tests\n\nNOT TESTED: synthetic smoke input cannot support H1.1-H1.3.\n",
+            encoding="utf-8")
+        return
     s = cfg["stats"]
     lines = [f"# Hypothesis tests — {run_dir.name}", ""] + banner
     for fn in (test_h1, test_h2, test_h3):

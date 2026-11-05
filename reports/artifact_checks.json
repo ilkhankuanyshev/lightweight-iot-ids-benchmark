@@ -1,0 +1,36 @@
+{
+  "notebook_counts": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "pdf_pages": 4,
+  "figures": [
+    {
+      "name": "fig1_latency_vs_load.png",
+      "pixels": [
+        2259,
+        1387
+      ],
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    },
+    {
+      "name": "fig2_distribution_boxplot.png",
+      "pixels": [
+        2286,
+        1437
+      ],
+      "dpi": [
+        299.9994,
+        299.9994
+      ]
+    }
+  ],
+  "raw_sha256": "569fd6f69c873fe1e2d845e921b38c6e4746a3decbb4db5722b1e060f7d2cd80"
+}

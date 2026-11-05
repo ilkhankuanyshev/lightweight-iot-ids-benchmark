@@ -1,0 +1,13 @@
+{
+  "raw_rows": 30800,
+  "warmup_rows": 2800,
+  "benchmark_attempts": 28000,
+  "benchmark_errors": 0,
+  "iqr_flagged_not_removed": 3380,
+  "seed": 42,
+  "bootstrap_resamples": 4000,
+  "origin": [
+    "synthetic_smoke"
+  ],
+  "warning": "CI is descriptive: folds overlap and few process units give weak uncertainty estimates."
+}

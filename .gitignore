@@ -48,3 +48,14 @@ results/*
 Thumbs.db
 .idea/
 .vscode/
+
+# Task 3 compact audit artifacts
+!data/raw/test_run.jsonl
+!data/raw/provenance.json
+!data/processed/metrics_summary.csv
+!data/processed/run_summary.csv
+!data/processed/quality_metrics.csv
+!data/processed/quality_summary.csv
+!data/processed/audit.json
+!data/processed/failures.csv
+!data/processed/request_flags.csv

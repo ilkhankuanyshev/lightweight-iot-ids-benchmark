@@ -1,5 +1,13 @@
 # Data
 
+## Task 3 addition
+
+The compact `raw/test_run.jsonl` contains actually measured local timings on the
+synthetic sample described below. `raw/provenance.json` records origin, hashes,
+configuration and environment. The allowlisted Task 3 summaries in `processed/`
+are versioned, while the full CICIoT2023 dataset and large experimental runs are
+still ignored. The folder table below describes the original Task 2 setup.
+
 | Folder | Versioned | Content |
 |---|---|---|
 | `sample/` | yes | `ciciot2023_sample.csv` — 10 rows, 46 features + `label`, all 8 classes |

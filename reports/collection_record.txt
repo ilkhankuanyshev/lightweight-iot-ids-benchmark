@@ -1,0 +1,35 @@
+2026-11-05 20:32:01 | INFO    | Run 20261105T153201Z_task3_smoke | phase all | config C:\Users\Asus\Documents\Codex\2026-11-05\referenced-chatgpt-conversation-this-is-an\outputs\lightweight-iot-ids-benchmark\configs\task3_smoke.yaml
+2026-11-05 20:32:01 | WARNING | SMOKE MODE: augmenting 10 sample rows by jittered resampling; metrics are NOT meaningful
+2026-11-05 20:32:01 | INFO    | Loaded 320 rows x 46 features from ciciot2023_sample.csv; class counts: {'Benign': 40, 'DDoS': 40, 'DoS': 40, 'Mirai': 40, 'Recon': 40, 'Spoofing': 40, 'Web': 40, 'BruteForce': 40}
+2026-11-05 20:32:01 | INFO    | [split 1/2 r0 f0] MI ranking (top 10): ['flow_duration', 'Srate', 'Rate', 'Max', 'Tot sum', 'AVG', 'Std', 'Tot size', 'Covariance', 'Radius']
+2026-11-05 20:32:02 | INFO    | [split 1/2 r0 f0] k=46 decision_tree fp32 | F1=1.0000 p50=0.0153ms size=1.7KB RAM=55MB | guardrails OK
+2026-11-05 20:32:03 | INFO    | [split 1/2 r0 f0] k=46 random_forest fp32 | F1=1.0000 p50=0.0242ms size=134.7KB RAM=56MB | guardrails OK
+2026-11-05 20:32:04 | INFO    | [split 1/2 r0 f0] k=46 lightgbm      fp32 | F1=0.9875 p50=0.0306ms size=159.9KB RAM=56MB | guardrails OK
+2026-11-05 20:32:05 | INFO    | [split 1/2 r0 f0] k=46 mlp           fp32 | F1=0.7990 p50=0.0272ms size=22.7KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:08 | INFO    | [split 1/2 r0 f0] k=46 mlp           int8 | F1=0.7932 p50=0.0341ms size=10.8KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:09 | INFO    | [split 1/2 r0 f0] k=46 cnn1d         fp32 | F1=0.8925 p50=0.0332ms size=94.4KB RAM=57MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:09 | INFO    | [split 1/2 r0 f0] k=46 cnn1d         int8 | F1=0.8925 p50=0.0388ms size=27.8KB RAM=58MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:10 | INFO    | [split 1/2 r0 f0] k=15 decision_tree fp32 | F1=1.0000 p50=0.0162ms size=1.7KB RAM=55MB | guardrails OK
+2026-11-05 20:32:11 | INFO    | [split 1/2 r0 f0] k=15 random_forest fp32 | F1=1.0000 p50=0.0245ms size=135.7KB RAM=56MB | guardrails OK
+2026-11-05 20:32:12 | INFO    | [split 1/2 r0 f0] k=15 lightgbm      fp32 | F1=1.0000 p50=0.0280ms size=161.4KB RAM=56MB | guardrails OK
+2026-11-05 20:32:13 | INFO    | [split 1/2 r0 f0] k=15 mlp           fp32 | F1=0.6318 p50=0.0309ms size=14.6KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:13 | INFO    | [split 1/2 r0 f0] k=15 mlp           int8 | F1=0.6318 p50=0.0380ms size=8.6KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:14 | INFO    | [split 1/2 r0 f0] k=15 cnn1d         fp32 | F1=0.5208 p50=0.0283ms size=32.2KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:15 | INFO    | [split 1/2 r0 f0] k=15 cnn1d         int8 | F1=0.5208 p50=0.0408ms size=12.0KB RAM=57MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:15 | INFO    | [split 2/2 r0 f1] MI ranking (top 10): ['flow_duration', 'Srate', 'Rate', 'Max', 'Tot sum', 'Radius', 'Std', 'AVG', 'Covariance', 'Min']
+2026-11-05 20:32:16 | INFO    | [split 2/2 r0 f1] k=46 decision_tree fp32 | F1=1.0000 p50=0.0159ms size=1.7KB RAM=55MB | guardrails OK
+2026-11-05 20:32:16 | INFO    | [split 2/2 r0 f1] k=46 random_forest fp32 | F1=1.0000 p50=0.0217ms size=133.1KB RAM=56MB | guardrails OK
+2026-11-05 20:32:17 | INFO    | [split 2/2 r0 f1] k=46 lightgbm      fp32 | F1=1.0000 p50=0.0283ms size=161.3KB RAM=56MB | guardrails OK
+2026-11-05 20:32:18 | INFO    | [split 2/2 r0 f1] k=46 mlp           fp32 | F1=0.7916 p50=0.0340ms size=22.7KB RAM=56MB | guardrails OK
+2026-11-05 20:32:19 | INFO    | [split 2/2 r0 f1] k=46 mlp           int8 | F1=0.7916 p50=0.0344ms size=10.8KB RAM=56MB | guardrails OK
+2026-11-05 20:32:20 | INFO    | [split 2/2 r0 f1] k=46 cnn1d         fp32 | F1=0.7417 p50=0.0309ms size=94.4KB RAM=57MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:20 | INFO    | [split 2/2 r0 f1] k=46 cnn1d         int8 | F1=0.7419 p50=0.0433ms size=27.8KB RAM=58MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:21 | INFO    | [split 2/2 r0 f1] k=15 decision_tree fp32 | F1=1.0000 p50=0.0147ms size=1.7KB RAM=55MB | guardrails OK
+2026-11-05 20:32:22 | INFO    | [split 2/2 r0 f1] k=15 random_forest fp32 | F1=1.0000 p50=0.0228ms size=137.2KB RAM=56MB | guardrails OK
+2026-11-05 20:32:23 | INFO    | [split 2/2 r0 f1] k=15 lightgbm      fp32 | F1=0.9875 p50=0.0295ms size=161.3KB RAM=57MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:24 | INFO    | [split 2/2 r0 f1] k=15 mlp           fp32 | F1=0.6023 p50=0.0298ms size=14.6KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:24 | INFO    | [split 2/2 r0 f1] k=15 mlp           int8 | F1=0.6023 p50=0.0383ms size=8.6KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:25 | INFO    | [split 2/2 r0 f1] k=15 cnn1d         fp32 | F1=0.3750 p50=0.0282ms size=32.2KB RAM=56MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:25 | INFO    | [split 2/2 r0 f1] k=15 cnn1d         int8 | F1=0.3727 p50=0.0385ms size=12.0KB RAM=57MB | VIOLATES benign_fpr>0.02
+2026-11-05 20:32:25 | INFO    | All splits done in 24.4s -> C:\Users\Asus\Documents\Codex\2026-11-05\referenced-chatgpt-conversation-this-is-an\outputs\lightweight-iot-ids-benchmark\results\20261105T153201Z_task3_smoke\metrics.csv
+2026-11-05 20:32:26 | INFO    | Reports: C:\Users\Asus\Documents\Codex\2026-11-05\referenced-chatgpt-conversation-this-is-an\outputs\lightweight-iot-ids-benchmark\results\20261105T153201Z_task3_smoke\summary.md, C:\Users\Asus\Documents\Codex\2026-11-05\referenced-chatgpt-conversation-this-is-an\outputs\lightweight-iot-ids-benchmark\results\20261105T153201Z_task3_smoke\stats.md
